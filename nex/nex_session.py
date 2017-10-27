@@ -3,7 +3,7 @@ import requests
 import redis
 import json
 import urllib3
-# 忽略因请求https而忽略证书时的警告
+# 忽略请求https时 因忽略证书的警告
 urllib3.disable_warnings()
 
 
@@ -11,10 +11,10 @@ class NexSession(object):
 	def __init__(self):
 		self.config_path = '../nex_b.config'
 		self.config = self._read_config()
-		self.admin_session = self.create_session('admin')
-		self.normal_session = self.create_session('normal')
-		self.none_session = self.create_session('none')
-		self.super_session = self.create_session('superadmin')
+		self.admin_session = self._create_session('admin')
+		self.normal_session = self._create_session('normal')
+		self.none_session = self._create_session('none')
+		self.super_session = self._create_session('superadmin')
 
 
 	def _read_config(self):
@@ -23,7 +23,7 @@ class NexSession(object):
 			config.readfp(conf)
 		return config
 
-	def create_session(self, role):
+	def _create_session(self, role):
 		config = self.config
 		url = config['url']['base_url']
 		if role == 'admin':
